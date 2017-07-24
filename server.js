@@ -30,7 +30,9 @@ const dbConnectString = process.env.MONGODB_URI ||
 //"mongodb://heroku_1npw9w42:568hm9f4kq6q6873a5j3o78tr5@ds113063.mlab.com:13063/heroku_1npw9w42";
 
 // Database configuration with mongoose
-mongoose.connect(dbConnectString);
+mongoose.connect(dbConnectString, function(error){
+	if (error) throw error;
+});
 var db = mongoose.connection;
 
 // Show any mongoose errors
