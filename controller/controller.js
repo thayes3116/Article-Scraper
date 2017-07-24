@@ -15,9 +15,12 @@ router.get("/", function(req, res){
   res.render("main");
 })
 
+router.get("/main", function(req, res){
+  res.render("main");
+})
 // A GET request to scrape the onion website
 router.get("/scrape", function(req, res) {
-  console.log("Hitting the /scrape");
+  // console.log("Hitting the /scrape");
   var scrapeArray = [];
 
   request(website, function(error, response, html) {
@@ -48,63 +51,90 @@ router.get("/scrape", function(req, res) {
         if (err) {
           console.log(err);
         }
-        // Or log the doc
         else {
-          console.log("1 article pushed");
-          scrapeArray.push(doc);
 
-          // console.log(scrapeArray);        
-        }
+          // console.log(doc, "from the scrape");
+          
+        }       
       });
-
     });
-    console.log("Being render to handlebars");
-  res.render("main", {scrape:scrapeArray})
   });
   // Tell the browser that we finished scraping the text
-
+    res.redirect('main')
 });
 
-// Grab an article by it's ObjectId
-router.get("/articles/:id", function(req, res) {
-  // Using the id passed in the id parameter, prepare a query that finds the matching one in our db...
-  Article.findOne({ "_id": req.params.id })
-  // ..and populate all of the notes associated with it
-  .populate("note")
-  // now, execute our query
-  .exec(function(error, doc) {
-    // Log any errors
+router.get('/articles', function(req, res){
+
+  console.log("hitting /articles");
+
+  Article.find({})
+    .populate("comment")
+    .exec(function(error, doc) {
+    // Log any errors 
     if (error) {
       console.log(error);
     }
-    // Otherwise, send the doc to the browser as a json object
+    // Or send the doc to the browser as a json object
     else {
-      //res.json(doc);
+      // console.log("doc from article get", doc)
+      res.render('main', {scrape: doc})
     }
   });
 });
+// Grab an article by it's ObjectId
+// router.get("/articles/:id", function(req, res) {
+//   // Using the id passed in the id parameter, prepare a query that finds the matching one in our db...
+//   Article.findOne({ "_id": req.params.id })
+//   // ..and populate all of the notes associated with it
+//   .populate("note")
+//   // now, execute our query
+//   .exec(function(error, doc) {
+//     // Log any errors
+//     if (error) {
+//       console.log(error);
+//     }
+//     // Otherwise, send the doc to the browser as a json object
+//     else {
+//       //res.json(doc);
+//     }
+//   });
+// });
 
 router.post("/articleSave/:_id", function(req, res){
+
  var where = {"_id": req.params._id};
- console.log(where);
+ 
   Article.findOneAndUpdate(
     where, 
-    {favorite: true, 'log.updated': new Date()},
+    {favorite: true},
     function(err, doc) {
         // Log any errors
         if (err) {
           console.log(err);
         }
-        else {
-          console.log("post favorite update article ",doc);
-          
-          res.redirect('/scrape');
+        else {          
+          res.redirect('/articles');
         }
-  }).exec();
-  
-  console.log("articlesave post route");
-
+  })
 });
+
+router.get("/savedArticles", function(req, res){
+
+    Article.find({"favorite":true})
+    .populate("comment")
+    .exec(function(error, doc) {
+    // Log any errors 
+    if (error) {
+      console.log(error);
+    }
+    // Or send the doc to the browser as a json object
+    else {
+      // console.log("doc from article get", doc)
+      res.render('main', {scrape: doc})
+    }
+  });
+});
+
 
 // Create a new note or replace an existing note
 router.post("/articles/:id", function(req, res) {
