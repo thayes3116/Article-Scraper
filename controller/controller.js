@@ -18,6 +18,7 @@ router.get("/", function(req, res){
 router.get("/main", function(req, res){
   res.render("main");
 })
+
 // A GET request to scrape the onion website
 router.get("/scrape", function(req, res) {
   // console.log("Hitting the /scrape");
