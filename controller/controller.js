@@ -85,10 +85,11 @@ router.get("/articles/:id", function(req, res) {
 });
 
 router.post("/articleSave/:_id", function(req, res){
- 
+ var where = {"_id": req.params._id};
+ console.log(where);
   Article.findOneAndUpdate(
-    {"_id": req.params._id}, 
-    {$set:{"favorite": true}},
+    where, 
+    {favorite: true, 'log.updated': new Date()},
     function(err, doc) {
         // Log any errors
         if (err) {
@@ -99,7 +100,7 @@ router.post("/articleSave/:_id", function(req, res){
           
           res.redirect('/scrape');
         }
-  });
+  }).exec();
   
   console.log("articlesave post route");
 
