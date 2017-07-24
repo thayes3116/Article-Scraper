@@ -17,7 +17,7 @@ router.get("/", function(req, res){
 
 // A GET request to scrape the onion website
 router.get("/scrape", function(req, res) {
-
+  console.log("Hitting the /scrape");
   var scrapeArray = [];
 
   request(website, function(error, response, html) {
@@ -50,7 +50,7 @@ router.get("/scrape", function(req, res) {
         }
         // Or log the doc
         else {
-
+          console.log("1 article pushed");
           scrapeArray.push(doc);
 
           // console.log(scrapeArray);        
