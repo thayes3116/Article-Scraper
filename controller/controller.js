@@ -58,7 +58,7 @@ router.get("/scrape", function(req, res) {
       });
 
     });
-      
+    console.log("Being render to handlebars");
   res.render("main", {scrape:scrapeArray})
   });
   // Tell the browser that we finished scraping the text
