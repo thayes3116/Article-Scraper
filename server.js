@@ -30,6 +30,8 @@ const dbConnectString = process.env.MONGODB_URI || "mongodb://localhost/scraper"
 // Database configuration with mongoose
 mongoose.connect(dbConnectString, function(error){
 	if (error) throw error;
+
+	console.log("connnected to mongoose");
 });
 
 // Listen on port 3000
