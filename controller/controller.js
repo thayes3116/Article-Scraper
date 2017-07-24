@@ -1,4 +1,4 @@
-// Requiring comment and article models
+      // Requiring comment and article models
 var Comment = require("../model/comment.js");
 var Article = require("../model/article.js");
 

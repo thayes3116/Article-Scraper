@@ -23,26 +23,13 @@ app.set("view engine", "handlebars");
 var routes = require("./controller/controller.js");
 app.use("/", routes);
 
-const dbConnectString = process.env.MONGODB_URI || 
-	process.env.MONGODB_URL || 
-	"mongodb://localhost/scraper";	
+const dbConnectString = process.env.MONGODB_URI || "mongodb://localhost/scraper";	
 
 //"mongodb://heroku_1npw9w42:568hm9f4kq6q6873a5j3o78tr5@ds113063.mlab.com:13063/heroku_1npw9w42";
 
 // Database configuration with mongoose
 mongoose.connect(dbConnectString, function(error){
 	if (error) throw error;
-});
-var db = mongoose.connection;
-
-// Show any mongoose errors
-db.on("error", function(error) {
-  console.log("Mongoose Error: ", error);
-});
-
-// Once logged in to the db through mongoose, log a success message
-db.once("open", function() {
-  console.log("Mongoose connection successful.");
 });
 
 // Listen on port 3000
