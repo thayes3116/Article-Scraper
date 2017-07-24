@@ -61,7 +61,7 @@ router.get("/scrape", function(req, res) {
     });
   });
   // Tell the browser that we finished scraping the text
-    res.redirect('main')
+    res.render('main',{scrapedone: "Scrape Complete"})
 });
 
 router.get('/articles', function(req, res){
@@ -82,24 +82,24 @@ router.get('/articles', function(req, res){
     }
   });
 });
-// Grab an article by it's ObjectId
-// router.get("/articles/:id", function(req, res) {
-//   // Using the id passed in the id parameter, prepare a query that finds the matching one in our db...
-//   Article.findOne({ "_id": req.params.id })
-//   // ..and populate all of the notes associated with it
-//   .populate("note")
-//   // now, execute our query
-//   .exec(function(error, doc) {
-//     // Log any errors
-//     if (error) {
-//       console.log(error);
-//     }
-//     // Otherwise, send the doc to the browser as a json object
-//     else {
-//       //res.json(doc);
-//     }
-//   });
-// });
+//Grab an article by it's ObjectId
+router.get("/comments/:id", function(req, res) {
+  // Using the id passed in the id parameter, prepare a query that finds the matching one in our db...
+  Article.findOne({ "_id": req.params.id })
+  // ..and populate all of the notes associated with it
+  .populate("comment")
+  // now, execute our query
+  .exec(function(error, doc) {
+    // Log any errors
+    if (error) {
+      console.log(error);
+    }
+    // Otherwise, send the doc to the browser as a json object
+    else {
+      //res.json(doc);
+    }
+  });
+});
 
 router.post("/articleSave/:_id", function(req, res){
 
